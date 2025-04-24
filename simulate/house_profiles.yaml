@@ -1,0 +1,26 @@
+houses:
+  - id: "H001"
+    profile: "high"
+  - id: "H002"
+    profile: "low"
+  - id: "H003"
+    profile: "medium"
+  - id: "H004"
+    profile: "medium"
+  - id: "H005"
+    profile: "high"
+  - id: "H006"
+    profile: "high" 
+  - id: "H007"
+    profile: "low"    
+
+profiles:
+  high:
+    consumption_range: [5.0, 10.0]
+  medium:
+    consumption_range: [3.5, 5.0]
+  low:
+    consumption_range: [0.5, 3.5]
+
+error_probability: 0.1   # 10% chance de error en un campo por fila
+interval_seconds: 30     # intervalo entre lotes

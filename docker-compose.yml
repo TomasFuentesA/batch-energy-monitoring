@@ -1,0 +1,48 @@
+version: "3.9"
+
+networks:
+  batch-energy-monitoring:
+
+volumes:
+  data_raw:
+    driver: local
+
+services:
+  postgres:
+    networks:
+      - batch-energy-monitoring
+    build: ./db
+    restart: always
+    container_name: postgres   
+    ports:
+      - "5432:5432"
+    environment:
+      - bind-address=0.0.0.0
+      - POSTGRESQL_DATABASE=batch_energy_monitoring
+      - POSTGRESQL_USERNAME=energyuser
+      - POSTGRESQL_PASSWORD=energypass
+  spark:
+    networks:
+      - batch-energy-monitoring
+    build:
+      context: .
+      dockerfile: spark_jobs/Dockerfile
+    container_name: spark
+    depends_on:
+      - postgres
+    volumes:
+      - ./spark_jobs:/app
+      - data_raw:/app/data/raw
+    environment:
+      - SPARK_MODE=master
+
+  simulate:
+    networks:
+      - batch-energy-monitoring
+    build:
+      context: .
+      dockerfile: simulate/Dockerfile
+    container_name: simulate
+    volumes:
+      - ./simulate:/app
+      - data_raw:/app/data/raw
