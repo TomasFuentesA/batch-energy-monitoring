@@ -6,7 +6,6 @@ RUN pip3 install pyspark pandas sqlalchemy scikit-learn
 
 COPY spark_jobs/preprocess.py ./app
 
-# Copia los datos desde el contexto raíz
-COPY data/raw /app/data/raw
-
 WORKDIR /app
+
+CMD ["python3", "preprocess.py"]
