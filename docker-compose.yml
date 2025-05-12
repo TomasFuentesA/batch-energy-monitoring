@@ -24,6 +24,8 @@ services:
       - POSTGRESQL_DATABASE=batch_energy_monitoring
       - POSTGRESQL_USERNAME=energyuser
       - POSTGRESQL_PASSWORD=energypass
+    volumes:
+      - ./db:/app/db
   spark-master:
     networks:
       - batch-energy-monitoring
@@ -82,3 +84,18 @@ services:
       - ./simulate:/app
       - data_raw:/app/data/raw
       - data_clean:/app/data/clean
+    
+  jupyter:
+    networks:
+      - batch-energy-monitoring
+    build: 
+      context: .
+      dockerfile: notebooks/Dockerfile
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+    depends_on:
+      - postgres
+
