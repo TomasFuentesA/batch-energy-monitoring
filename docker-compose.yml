@@ -2,9 +2,12 @@ version: "3.9"
 
 networks:
   batch-energy-monitoring:
+    name: batch-energy-monitoring # Nombre explícito para la red
 
 volumes:
   data_raw:
+    driver: local
+  data_clean:
     driver: local
 
 services:
@@ -21,20 +24,38 @@ services:
       - POSTGRESQL_DATABASE=batch_energy_monitoring
       - POSTGRESQL_USERNAME=energyuser
       - POSTGRESQL_PASSWORD=energypass
-  spark:
+  spark-master:
     networks:
       - batch-energy-monitoring
     build:
       context: .
       dockerfile: spark_jobs/Dockerfile
-    container_name: spark
-    depends_on:
-      - postgres
+    container_name: spark-master
     volumes:
       - ./spark_jobs:/app
       - data_raw:/app/data/raw
+      - data_clean:/app/data/clean
+    ports:
+      - "8080:8080"
+      - "7077:7077"
     environment:
       - SPARK_MODE=master
+  spark-worker:
+    networks:
+      - batch-energy-monitoring
+    build:
+      context: .
+      dockerfile: scripts/Dockerfile
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+      - postgres
+    volumes:
+      - ./scripts:/app
+      - data_clean:/app/data/clean
+      - ./scripts/postgresql-42.7.5.jar:/opt/spark/jars/postgresql-42.7.5.jar
+    environment:
+      - SPARK_MODE=worker
 
   simulate:
     networks:
@@ -46,3 +67,4 @@ services:
     volumes:
       - ./simulate:/app
       - data_raw:/app/data/raw
+      - data_clean:/app/data/clean
