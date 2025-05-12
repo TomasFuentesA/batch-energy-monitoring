@@ -40,22 +40,36 @@ services:
       - "7077:7077"
     environment:
       - SPARK_MODE=master
-  spark-worker:
+  insert_clean_data:
     networks:
       - batch-energy-monitoring
     build:
       context: .
       dockerfile: scripts/Dockerfile
-    container_name: spark-worker
+    container_name: insert_clean_data
+    command: ["spark-submit", "--master", "local[*]", "insert_clean_data.py"]
     depends_on:
-      - spark-master
       - postgres
     volumes:
-      - ./scripts:/app
       - data_clean:/app/data/clean
-      - ./scripts/postgresql-42.7.5.jar:/opt/spark/jars/postgresql-42.7.5.jar
+      - ./scripts:/app
     environment:
-      - SPARK_MODE=worker
+      - SPARK_MODE=client
+  insert_raw_data:
+    networks:
+      - batch-energy-monitoring
+    build:
+      context: .
+      dockerfile: scripts/Dockerfile
+    container_name: insert_raw_data
+    command: ["spark-submit", "--master", "local[*]", "insert_raw_data.py"]
+    depends_on:
+      - postgres
+    volumes:
+      - data_raw:/app/data/raw
+      - ./scripts:/app
+    environment:
+      - SPARK_MODE=client
 
   simulate:
     networks:

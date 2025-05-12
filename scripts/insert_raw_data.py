@@ -18,7 +18,7 @@ db_properties = {
 }
 
 # Ruta a los datos limpios
-clean_data_path = "/app/data/clean"
+raw_data_path = "/app/data/raw"
 
 consumption_schema = StructType([StructField('timestamp', TimestampType(), True),
                                  StructField('house_id', StringType(), True),
@@ -27,16 +27,16 @@ consumption_schema = StructType([StructField('timestamp', TimestampType(), True)
                                  StructField('voltage', FloatType(), True)])
 
 # Leer archivos CSV de la carpeta de datos limpios
-def process_clean_data():
-    if not os.path.exists(clean_data_path):
+def process_raw_data():
+    if not os.path.exists(raw_data_path):
         print("Clean data folder not found.")
         return
 
     # Leer todos los archivos CSV en el directorio
     df_clean = spark.read.format("csv") \
-        .option("header", False) \
+        .option("header", True) \
         .schema(consumption_schema) \
-        .load(f"{clean_data_path}/*.csv")
+        .load(f"{raw_data_path}/*.csv")
 
     if df_clean.rdd.isEmpty():
         print("No hay datos nuevos para insertar.")
@@ -45,16 +45,16 @@ def process_clean_data():
     # Insertar en la tabla PostgreSQL
     df_clean.write.jdbc(
         url=jdbc_url,
-        table="energy_data_cleaned",
+        table="energy_data_raw",
         mode="append",
         properties=db_properties
     )
 
     print(f"Datos insertados correctamente: {df_clean}")
 
-    for filename in os.listdir(clean_data_path):
+    for filename in os.listdir(raw_data_path):
         if filename.endswith(".csv"):
-            os.remove(os.path.join(clean_data_path, filename))
+            os.remove(os.path.join(raw_data_path, filename))
 
     
 
@@ -62,7 +62,7 @@ def process_clean_data():
 if __name__ == "__main__":
     while True:
         try:
-            process_clean_data()
+            process_raw_data()
             time.sleep(10)  # Espera 10 segundos antes de revisar de nuevo
         except Exception as e:
             print(f"Error al insertar datos: {e}")
