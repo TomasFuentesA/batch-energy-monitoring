@@ -26,7 +26,7 @@ consumption_schema = StructType([StructField('timestamp', TimestampType(), True)
                                  StructField('temperature', FloatType(), True),
                                  StructField('voltage', FloatType(), True)])
 
-# Leer archivos CSV de la carpeta de datos limpios
+# Leer archivos CSV de la carpeta de datos "raw"
 def process_raw_data():
     if not os.path.exists(raw_data_path):
         print("Clean data folder not found.")
@@ -50,7 +50,8 @@ def process_raw_data():
         properties=db_properties
     )
 
-    print(f"Datos insertados correctamente: {df_clean}")
+    print("Primeras filas de los datos insertados:")
+    print(df_clean.head())
 
     for filename in os.listdir(raw_data_path):
         if filename.endswith(".csv"):

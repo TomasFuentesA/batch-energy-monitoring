@@ -50,7 +50,8 @@ def process_clean_data():
         properties=db_properties
     )
 
-    print(f"Datos insertados correctamente: {df_clean}")
+    print("Primeras filas de los datos insertados:")
+    print(df_clean.head())
 
     for filename in os.listdir(clean_data_path):
         if filename.endswith(".csv"):
