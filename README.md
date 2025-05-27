@@ -130,7 +130,7 @@ batch-energy-monitoring/
 ## 📬 Contacto
 
 👤 Desarrollado por [Tomas Fuentes](https://github.com/TomasFuentesA)  
-📧 tomas.fuentesa@gmail.com
+📧 fuentesarayat@gmail.com
 
 ---
 
