@@ -13,6 +13,7 @@ spark = SparkSession \
 
 
 consumption_schema = StructType([StructField('timestamp', TimestampType(), True),
+                                 StructField('simulated_timestamp', TimestampType(), True),
                                  StructField('house_id', StringType(), True),
                                  StructField('consumption_kWh', FloatType(), True),
                                  StructField('temperature', FloatType(), True),
@@ -22,7 +23,7 @@ consumption_schema = StructType([StructField('timestamp', TimestampType(), True)
 
 try:
     consumption_customer = spark.readStream.format("csv").schema(consumption_schema)\
-                    .option("header", True).option("maxFilesPerTrigger",1)\
+                    .option("header", True).option("maxFilesPerTrigger",20)\
                     .load(f"{current_path}/data/raw")
 
 
