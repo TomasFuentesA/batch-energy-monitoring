@@ -19,7 +19,6 @@ Este proyecto simula el consumo energético de distintas viviendas en un vecinda
 
 ---
 
-```markdown
 ## 🏗️ Arquitectura
 
 ```mermaid
