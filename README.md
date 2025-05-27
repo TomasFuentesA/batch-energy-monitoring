@@ -19,23 +19,18 @@ Este proyecto simula el consumo energético de distintas viviendas en un vecinda
 
 ---
 
+```markdown
 ## 🏗️ Arquitectura
 
 ```mermaid
 flowchart LR
-    subgraph Simulación
-        A[simulate_batch.py] --> B[data/raw]
-    end
+    A[simulate_batch.py] --> B[data/raw]
 
-    subgraph Preprocesamiento
-        B --> C[preprocess.py (Spark)]
-        C --> D[data/clean]
-        C --> E[PostgreSQL: energy_data_raw]
-        C --> F[PostgreSQL: energy_data_cleaned]
-    end
+    B --> C[preprocess.py (Spark)]
+    C --> D[data/clean]
+    C --> E[PostgreSQL: energy_data_raw]
+    C --> F[PostgreSQL: energy_data_cleaned]
 
-    subgraph Análisis
-        F --> G[Jupyter/EDA]
-        F --> H[ML models (scikit-learn)]
-        E --> G
-    end
+    F --> G[Jupyter/EDA]
+    F --> H[ML models (scikit-learn)]
+    E --> G
