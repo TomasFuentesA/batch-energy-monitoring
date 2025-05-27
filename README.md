@@ -115,7 +115,7 @@ batch-energy-monitoring/
 - Arquitectura distribuida y contenedores
 - Ingesta y modelado SQL con SQLAlchemy
 - Análisis exploratorio con Jupyter
-- ML aplicado a series temporales (en desarrollo)
+- Utilización de ML (en desarrollo)
 
 ---
 
