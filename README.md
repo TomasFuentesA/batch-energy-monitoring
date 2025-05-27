@@ -1,7 +1,7 @@
 
-# ⚡ Batch Energy Monitoring
+# ⚡ Batch Energy Monitoring — Proyecto de Data Science End-to-End
 
-Simulación y procesamiento batch de consumo energético residencial usando PySpark, PostgreSQL, y herramientas modernas de Data Engineering.
+Simulación, procesamiento y análisis exploratorio de consumo energético residencial utilizando un enfoque realista de Data Science, desde los datos crudos hasta la preparación para Machine Learning.
 
 ![Banner](https://raw.githubusercontent.com/TomasFuentesA/batch-energy-monitoring/main/assets/banner_energy.gif)
 
@@ -9,17 +9,18 @@ Simulación y procesamiento batch de consumo energético residencial usando PySp
 
 ## 📌 Descripción
 
-Este proyecto simula el consumo energético de distintas viviendas en un vecindario y ejecuta un pipeline batch completo:
+Este proyecto de ciencia de datos simula el consumo energético de un vecindario y recorre todo el ciclo de vida de un proyecto de DS:
 
-- Simulación de datos sintéticos y realistas
-- Limpieza y validación de datos en Spark
-- Ingesta a PostgreSQL mediante Spark Structured Streaming
-- Análisis exploratorio con Jupyter y modelado con scikit-learn
-- Contenerización completa usando Docker
+- 🏠 Simulación realista de datos sintéticos con patrones estacionales y errores reales
+- 🧹 Limpieza y transformación a escala con PySpark
+- 🧾 Ingesta estructurada en PostgreSQL
+- 📊 Análisis exploratorio profundo en Jupyter
+- 🤖 Base lista para modelado predictivo con scikit-learn
+- 🐳 Infraestructura portable con Docker
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura del flujo de datos
 
 ```mermaid
 flowchart LR
@@ -33,60 +34,55 @@ flowchart LR
     F --> G[Jupyter - EDA]
     F --> H[ML models - scikit-learn]
     E --> G
-
-
 ```
 
 ---
 
-## 🔧 Herramientas utilizadas
+## 🧰 Herramientas utilizadas
 
-| Herramienta     | Propósito                          |
-|------------------|-----------------------------------|
-| 🐍 Python         | Scripts y procesamiento            |
-| 🔥 PySpark        | Limpieza batch con Spark          |
-| 🐘 PostgreSQL     | Almacenamiento estructurado       |
-| 📦 SQLAlchemy     | Conexión ORM a la base de datos   |
-| 📓 Jupyter        | Análisis exploratorio (EDA)       |
-| 🧪 Scikit-learn   | Modelado predictivo               |
-| 🐳 Docker         | Contenedores reproducibles        |
-
----
-
-## 🏠 Simulación inteligente
-
-- Cada casa tiene un perfil: **bajo**, **medio** o **alto** consumo
-- Se simulan **estacionalidades climáticas** (verano/invierno)
-- Se introducen **picos realistas** y registros erróneos para control de calidad
-- Se avanza en tiempo simulado (`simulated_timestamp`) con granularidad configurable (1, 15, 30 minutos...)
+| Herramienta     | Rol en el proyecto                   |
+|-----------------|--------------------------------------|
+| 🐍 Python        | Lógica general y scripts             |
+| 🔥 PySpark       | Limpieza batch y transformación      |
+| 🐘 PostgreSQL    | Base de datos estructurada           |
+| 📦 SQLAlchemy    | Inserciones desde Python             |
+| 📓 Jupyter       | EDA y visualización exploratoria     |
+| 🧪 Scikit-learn  | Preparación y modelado predictivo    |
+| 🐳 Docker        | Infraestructura reproducible         |
 
 ---
 
-## 📈 ¿Qué permite analizar?
+## 🏠 Lógica de simulación
 
-- Distribución y variabilidad del consumo por vivienda y por día
-- Relación entre consumo, temperatura y voltaje
-- Casos anómalos o errores en sensores
-- Clasificación automática de viviendas con ML (futuro)
+- Casas con perfiles de consumo: **bajo**, **medio** y **alto**
+- Variación según estación del año (invierno/verano)
+- Relación directa entre temperatura, consumo y voltaje
+- Presencia de outliers **realistas** y **errores sintéticos** para pruebas de robustez
+- Tiempos simulados desde `2024-01-01` con granularidad configurable (ej. 15 min)
+
+---
+
+## 📈 Análisis y objetivos
+
+- Evaluar patrones de consumo diarios y por perfil
+- Detectar errores, valores atípicos y variabilidad natural
+- Visualizar la correlación entre temperatura y consumo
+- Preparar dataset para:
+  - Clasificación de viviendas
+  - Detección de anomalías
+  - Predicción de consumo energético
 
 ---
 
 ## 🚀 Cómo ejecutar
 
-1. Clona el repositorio:
-
 ```bash
 git clone https://github.com/TomasFuentesA/batch-energy-monitoring.git
 cd batch-energy-monitoring
-```
-
-2. Levanta todos los servicios con Docker:
-
-```bash
 docker-compose up --build
 ```
 
-3. Ingresa a Jupyter Notebook para análisis exploratorio (ver instrucciones en la carpeta `notebooks/`)
+Luego abre el contenedor de Jupyter para análisis (`/notebooks`).
 
 ---
 
@@ -94,36 +90,33 @@ docker-compose up --build
 
 ```
 batch-energy-monitoring/
-│
-├── data/               # Archivos raw y clean (por lote)
-├── db/                 # Dockerfile y init.sql para PostgreSQL
-├── spark_jobs/         # Scripts en PySpark
-├── notebooks/          # EDA y visualizaciones
-├── dashboards/         # (Opcional) para futuras visualizaciones
-├── Dockerfile          # Imagen para Spark y Python
-├── docker-compose.yml  # Orquestación de contenedores
-└── requirements.txt    # Dependencias del proyecto
+├── data/               # Datos simulados y limpios
+├── db/                 # PostgreSQL y scripts de init
+├── spark_jobs/         # Preprocesamiento con Spark
+├── notebooks/          # Análisis exploratorio
+├── Dockerfile          # Imagen principal
+├── docker-compose.yml  # Orquestación de servicios
+└── requirements.txt    # Dependencias del entorno
 ```
 
 ---
 
 ## 🌟 Habilidades desarrolladas
 
-- Diseño de pipelines de datos batch
-- Simulación sintética basada en perfiles
-- Limpieza y validación con PySpark
-- Arquitectura distribuida y contenedores
-- Ingesta y modelado SQL con SQLAlchemy
-- Análisis exploratorio con Jupyter
-- Utilización de ML (en desarrollo)
+- Generación y manipulación de datos sintéticos
+- ETL batch con PySpark
+- Diseño y uso de esquemas SQL para analítica
+- Control de errores reales en flujos de datos
+- Visualización de datos multivariados
+- Modelado supervisado en scikit-learn
 
 ---
 
-## 🧠 Futuro
+## 🔮 Futuro
 
-- Clasificación automática de casas según consumo
-- Detección de anomalías energéticas
-- Visualización interactiva con Streamlit (posible extensión)
+- Clasificación automática de viviendas
+- Modelos de predicción por perfil y estacionalidad
+- Detección temprana de errores de medición
 
 ---
 
@@ -134,4 +127,4 @@ batch-energy-monitoring/
 
 ---
 
-> Este proyecto es una plataforma de aprendizaje aplicada que combina ingeniería de datos, simulación realista y análisis predictivo. Ideal para portafolios o pruebas de concepto empresariales.
+> Proyecto completo de Data Science aplicado al mundo real: desde la simulación hasta el análisis y modelado predictivo.
