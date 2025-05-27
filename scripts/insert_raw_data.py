@@ -21,6 +21,7 @@ db_properties = {
 raw_data_path = "/app/data/raw"
 
 consumption_schema = StructType([StructField('timestamp', TimestampType(), True),
+                                 StructField('simulated_timestamp', TimestampType(), True),
                                  StructField('house_id', StringType(), True),
                                  StructField('consumption_kWh', FloatType(), True),
                                  StructField('temperature', FloatType(), True),
@@ -51,8 +52,10 @@ def process_raw_data():
     )
 
     print("Primeras filas de los datos insertados:")
-    print(df_clean.head())
+    df_clean.show(10, truncate=False)
 
+def clean_data():
+    # Limpiar los datos después de la inserción
     for filename in os.listdir(raw_data_path):
         if filename.endswith(".csv"):
             os.remove(os.path.join(raw_data_path, filename))
@@ -64,7 +67,8 @@ if __name__ == "__main__":
     while True:
         try:
             process_raw_data()
-            time.sleep(10)  # Espera 10 segundos antes de revisar de nuevo
+            time.sleep(5)  # Espera 3 segundos antes de revisar de nuevo
+            clean_data()
         except Exception as e:
             print(f"Error al insertar datos: {e}")
-            time.sleep(10)
+            time.sleep(3)
