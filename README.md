@@ -25,14 +25,15 @@ Este proyecto simula el consumo energético de distintas viviendas en un vecinda
 flowchart LR
     A[simulate_batch.py] --> B[data/raw]
 
-    B --> C[preprocess.py (Spark)]
+    B --> C[preprocess.py - Spark]
     C --> D[data/clean]
     C --> E[PostgreSQL: energy_data_raw]
     C --> F[PostgreSQL: energy_data_cleaned]
 
-    F --> G[Jupyter/EDA]
-    F --> H[ML models (scikit-learn)]
+    F --> G[Jupyter - EDA]
+    F --> H[ML models - scikit-learn]
     E --> G
+
 
 ```
 
