@@ -19,6 +19,7 @@ Este proyecto simula el consumo energético de distintas viviendas en un vecinda
 
 ---
 
+```markdown
 ## 🏗️ Arquitectura
 
 ```mermaid
@@ -33,6 +34,7 @@ flowchart LR
     F --> G[Jupyter/EDA]
     F --> H[ML models (scikit-learn)]
     E --> G
+
 ```
 
 ---
